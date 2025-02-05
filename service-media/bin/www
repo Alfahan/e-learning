@@ -5,7 +5,7 @@
  */
 
 const app = require('../app');
-const debug = require('debug')('api-gateway:server');
+const debug = require('debug')('service-media:server');
 const http = require('http');
 
 /**
