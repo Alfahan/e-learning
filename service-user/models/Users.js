@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: 'student'
         },
-        avata: {
+        avatar: {
             type: DataTypes.STRING,
             allowNull: true
         },
