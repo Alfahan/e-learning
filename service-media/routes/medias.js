@@ -6,6 +6,23 @@ const base64Img = require('base64-img');
 const db = require('../models'); // Pastikan import models dengan benar
 const Medias = db.Medias; // Harus sesuai dengan nama model di `models/Medias.js`
 
+router.get('/', async(req, res) => {
+  const media = await Medias.findAll({
+    attributes: ['id', 'image']
+  });
+
+  const mappedMedia = media.map((m) => {
+    m.image = `${req.get('host')}/${m.image}`;
+    return m;
+  })
+
+  return res.json({
+    status: 'success',
+    data: mappedMedia,
+  });
+})
+
+
 router.post('/', async (req, res) => {
   const image = req.body.image;
 
