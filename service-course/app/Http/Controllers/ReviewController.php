@@ -64,4 +64,59 @@ class ReviewController extends Controller
             'data' => $review
         ]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $rules = [
+            'rating' => 'integer|min:1|max:5',
+            'note' => 'string'
+        ];
+
+        $data = $request->except('user_id', 'course_id');
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()
+            ], 400);
+        }
+
+        $review = Reviews::find($id);
+
+        if (!$review) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'review not found'
+            ], 404);
+        }
+
+        $review->fill($data);
+        $review->save();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $review
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $review = Reviews::find($id);
+
+        if (!$review) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'review not found'
+            ], 404);
+        }
+
+        $review->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'review deleted'
+        ]);
+    }
 }
