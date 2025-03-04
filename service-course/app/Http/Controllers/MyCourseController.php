@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\Validator;
 
 class MyCourseController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $myCourse = MyCourse::query()->with('course');
+
+        $userId = $request->query('user_id');
+
+        $myCourse->when($userId, function($q) use ($userId) {
+            return $q->where('user_id', '=', $userId);
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $myCourse->get()
+        ]);
+    }
+
     public function create(Request $request)
     {
         $rules = [
